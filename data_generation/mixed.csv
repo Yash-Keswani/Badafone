@@ -1,0 +1,31 @@
+name,id,price,validity,data_limit (GB),speed,data_after_limit (GB),speed_after_limit,calls,sms,l_minutes,s_minutes,i_minutes
+mahadata silver,1,50,15,15,7,1.5,2,,,,,
+saverdata silver,3,25,15,7.5,5,0.75,2,,,,,
+supermahadata silver ,5,75,15,30,10,3,3,,,,,
+mahadata gold,7,90,30,30,7,3,2,,,,,
+saverdata gold,9,45,30,15,5,1.5,2,,,,,
+supermahadata gold,11,135,30,60,10,6,3,,,,,
+mahadata ruby,13,300,90,90,7,9,2,,,,,
+saverdata ruby,15,175,90,45,5,4.5,2,,,,,
+supermahadata ruby ,17,375,90,180,10,18,3,,,,,
+mahadata platinum,19,500,183,183,7,18.3,2,,,,,
+saverdata platinum,21,300,183,91.5,5,9.15,2,,,,,
+supermahadata platinum,23,750,183,366,10,36.6,3,,,,,
+mahadata elixir,25,950,365,365,7,36.5,2,,,,,
+saverdata elixir,27,500,365,182.5,5,18.25,2,,,,,
+supermahadata elixir ,29,1500,365,730,10,73,3,,,,,
+mahacall silver,2,50,15,,,,,1000,100,10000,1000,10
+savercall silver,4,25,15,,,,,500,50,5000,500,5
+supermahacall silver ,6,75,15,,,,,2000,200,20000,2000,20
+mahacall gold,8,90,30,,,,,2000,200,20000,2000,20
+savercall gold,10,45,30,,,,,1000,100,10000,1000,10
+supermahadata gold,12,135,30,,,,,4000,400,40000,4000,40
+mahacall ruby,14,300,90,,,,,6000,600,60000,6000,60
+savercall ruby,16,175,90,,,,,3000,300,30000,3000,30
+supermahacall ruby ,18,375,90,,,,,12000,1200,120000,12000,120
+mahacall platinum,20,500,183,,,,,12000,1200,120000,12000,120
+savercall platinum,22,300,183,,,,,6000,600,60000,6000,60
+supermahadata platinum,24,750,183,,,,,24000,2400,240000,24000,240
+mahacall elixir,26,950,365,,,,,24000,2400,240000,24000,240
+savercall elixir,28,500,365,,,,,12000,1200,120000,12000,120
+supermahacall elixir ,30,1500,365,,,,,48000,4800,480000,48000,480
