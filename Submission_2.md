@@ -36,11 +36,43 @@ FOR EACH ROW
 END
 ```
 
+2) Create a trigger that updates the value of `roaming` cell when the person enters or leaves their home tower.
+
+```SQL
+CREATE TRIGGER is_roaming BEFORE UPDATE ON sim_card
+FOR EACH ROW
+    BEGIN
+        SET NEW.roaming = 
+        IF(NEW.current_tower = NEW.home_tower, 0, 1);
+    END
+```
+
+3) Create a trigger that deducts money from a person's wallet balance when they purchase a plan.
+
+```SQL
+CREATE TRIGGER purchase BEFORE INSERT ON transaction
+FOR EACH ROW
+    BEGIN
+        UPDATE wallet
+        INNER JOIN transaction t 
+	        on wallet.phone_number = t.phone_number
+        INNER JOIN plan p 
+	        on t.plan_ID = p.plan_ID
+        SET balance = balance - p.price
+        WHERE wallet.phone_number = NEW.phone_number;
+    END
+
+```
+
 ## Indices
 * on aadhaar card in customer, in case someone wants to do lookup by aadhaar card
 * in phone number on customer to do lookup on (a single) customer by phone number
 * on tower by name to get tower ID from name (e.g. we want a query that finds all SIM cards in mumbai. for this, we would need the ID of mumbai, which is O(n) to seek for without an index. So we also store the reverse of ID->city name mapping)
 * on employee by employee email, so that the employer can conveniently see employee name from an e-mail that they receive from the employee
+
+## Check Constraints
+1) Support tickets cannot be closed without a response
+2) 
 
 ## Advanced Queries
 
