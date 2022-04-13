@@ -4,7 +4,11 @@
 * answered support tickets also show a response
 * purchase time also includes time of purchase now
 * fix email in employee table
-* more data diversity in ??? calling table / support ticket maybe
+* added some check constraints:
+
+## Check Constraints
+1) Support tickets cannot be closed without a response
+2) 
 
 ## Views and Grants
 Customer -
@@ -64,15 +68,30 @@ FOR EACH ROW
 
 ```
 
+4) Create a trigger to assign a support ticket to an employee, provided they don't have any open support tickets assigned to them to begin with.
+
+```SQL
+CREATE TRIGGER assign_employee BEFORE INSERT ON support_ticket
+FOR EACH ROW
+    BEGIN
+        SET NEW.employee_ID = (
+            SELECT employee.employee_ID FROM employee
+                WHERE NOT employee_ID IN (
+                    SELECT employee_ID FROM support_ticket
+                    WHERE closed = 0
+                )
+                ORDER BY RAND()
+                LIMIT 1
+            );
+    END
+```
+
 ## Indices
 * on aadhaar card in customer, in case someone wants to do lookup by aadhaar card
 * in phone number on customer to do lookup on (a single) customer by phone number
 * on tower by name to get tower ID from name (e.g. we want a query that finds all SIM cards in mumbai. for this, we would need the ID of mumbai, which is O(n) to seek for without an index. So we also store the reverse of ID->city name mapping)
-* on employee by employee email, so that the employer can conveniently see employee name from an e-mail that they receive from the employee
+* on plan table by the name of the plan
 
-## Check Constraints
-1) Support tickets cannot be closed without a response
-2) 
 
 ## Advanced Queries
 
