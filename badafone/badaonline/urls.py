@@ -18,5 +18,5 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-	path('customer', views.customer)
+	path('display/<str:table_name>', views.display_table)
 ]
