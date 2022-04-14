@@ -9,9 +9,11 @@ def display_table(request, table_name: str):
 	with connection.cursor() as cursor:
 		cursor.execute("SHOW TABLES")
 		table_names = [x[0] for x in cursor.fetchall() if not x[0].startswith("auth") and not x[0].startswith("django")]
+		cursor.execute("SHOW FULL TABLES WHERE TABLE_TYPE LIKE 'VIEW'")
+		view_names = [x[0] for x in cursor.fetchall()]
 		
-		if table_name.lower() not in table_names:
-			return HttpResponseNotFound('<h1>Table name not found in schema')
+		if table_name.lower() not in table_names and table_name.lower() not in view_names:
+			return HttpResponseNotFound('<h1>Table name not found in schema</h1>')
 		
 		cursor.execute(f"SELECT * FROM {table_name}")
 		dump = cursor.fetchall()
