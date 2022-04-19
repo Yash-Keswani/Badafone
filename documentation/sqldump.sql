@@ -141,6 +141,9 @@ INSERT INTO `employee` VALUES (100744,'Sarita',714229437400,'Creer','2022-01-20'
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
+SET SQL_SAFE_UPDATES = 0;
+update employee set e_mail = concat(lower(employee_name),employee_id,'@gmail.com');
+SET SQL_SAFE_UPDATES = 1;
 --
 -- Table structure for table `plan`
 --
