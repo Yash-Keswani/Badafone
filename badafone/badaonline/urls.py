@@ -18,5 +18,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-	path('display/<str:table_name>', views.display_table)
+	path('display/<str:table_name>', views.display_table),
+	path('all_plans', views.all_plans)
 ]

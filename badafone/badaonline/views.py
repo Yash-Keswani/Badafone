@@ -20,3 +20,11 @@ def display_table(request, table_name: str):
 		headers = [i[0] for i in cursor.description]
 	tosend = {"data": pd.DataFrame(dump, columns=headers).to_string()}
 	return render(request, "badaonline/display_table.html", tosend)
+
+def all_plans(request):
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM plan")
+		dump = cursor.fetchall()
+		headers = [i[0] for i in cursor.description]
+	tosend = {"data": pd.DataFrame(dump, columns=headers).to_html(classes='tbl', justify="center")}
+	return render(request, "badaonline/all_plans.html", tosend)
