@@ -26,5 +26,5 @@ def all_plans(request):
 		cursor.execute("SELECT * FROM plan")
 		dump = cursor.fetchall()
 		headers = [i[0] for i in cursor.description]
-	tosend = {"data": pd.DataFrame(dump, columns=headers).to_html(classes='tbl', justify="center")}
+	tosend = {"data": pd.DataFrame(dump, columns=headers).to_html(classes='tbl', justify="center", index=False)}
 	return render(request, "badaonline/all_plans.html", tosend)

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import json
 import os
 from pathlib import Path
 
@@ -27,7 +28,7 @@ SECRET_KEY = key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['badafone-production.up.railway.app']
+ALLOWED_HOSTS = ['badafone-production.up.railway.app', '127.0.0.1']
 
 # Application definition
 
@@ -75,14 +76,24 @@ WSGI_APPLICATION = 'badafone.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+credentials: dict[str, str] = {}
+
+if os.path.isfile('connecting.json'):
+	with open('connecting.json') as fl:
+		credentials = json.load(fl)
+else:
+	assert os.getenv("CONNECTING") is not None
+	credentials = json.loads(os.getenv("CONNECTING"))
+
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
-		'OPTIONS': {
-			'read_default_file': 'connecting.cnf',
-		},
-	}
+		'HOST': 'containers-us-west-38.railway.app',
+		'PORT': '6030',
+	} | credentials
 }
+
+print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

@@ -1,5 +1,0 @@
-[client]
-database = telecom
-user = api_user
-password = alphabetacal
-default-character-set = utf8
