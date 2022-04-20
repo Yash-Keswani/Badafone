@@ -365,7 +365,8 @@ CREATE TABLE `support_ticket` (
   KEY `support_ticket_customer_customer_ID_fk` (`customer_ID`),
   KEY `support_ticket_employee_employee_ID_fk` (`employee_ID`),
   CONSTRAINT `support_ticket_customer_customer_ID_fk` FOREIGN KEY (`customer_ID`) REFERENCES `customer` (`customer_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `support_ticket_employee_employee_ID_fk` FOREIGN KEY (`employee_ID`) REFERENCES `employee` (`employee_ID`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `support_ticket_employee_employee_ID_fk` FOREIGN KEY (`employee_ID`) REFERENCES `employee` (`employee_ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  check (closed = 0 or ticket_response is not null)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
