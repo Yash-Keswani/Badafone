@@ -25,6 +25,15 @@ img{
   gap: 3rem;
 }
 
+.te{
+  /* left: 20%; */
+  /* right: auto; */
+  text-align: center;
+  transform: translate(500%,1750%);
+  display: flex;
+  justify-content: center;
+}
+
 h1{
   font-size: 3rem;
   color:white;
