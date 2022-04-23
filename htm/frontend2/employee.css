@@ -1,0 +1,130 @@
+body{
+  margin: 0;
+  font-family: Fugaz One;
+  font-weight: lighter;
+}
+.container{
+  width: 100vw;
+  height: 100vh;
+
+ background: url("./employee_bg.jpg");
+ background-size: contain ;
+ position: relative;
+
+}
+.navbar{
+  display: flex;
+  align-items: center;
+
+}
+
+
+.previous:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.previous {
+  text-decoration: none;
+  display: inline-block;
+  padding: 4px 26px;
+  background-color: #f1f1f1;
+  color: black;
+  margin: 20px;
+  font-size: 40px;
+  border-radius: 50%;
+
+}
+.heading{
+  padding-left: 390px;
+  margin: 0;
+  font-size: 70px;
+  color: white;
+}
+.centerContainer{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  justify-content: space-between;
+
+}
+.subheader{
+  flex-wrap: wrap;
+  margin: 0 280px;
+  padding: 30px;
+  
+  
+  /* background-color: rgba(191, 191, 191, 0.8); */
+  
+}
+.tickets{
+  color: white;
+  font-weight: 200;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-around;
+  padding: 2% 5%;
+  font-size: 1rem;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.button{
+  border: 4px solid #93734E;
+  padding: 0.5%;
+  transition: all ease-out 250ms;
+  cursor: pointer;
+  font-size: larger;
+  /* size: 2000px; */
+  /* height: 500px; */
+  /* width: 200px; */
+  border-radius: 10px;
+  position: absolute;
+  left: 245px;
+}
+.button2{
+  border: 4px solid #93734E;
+  padding: 0.5%;
+  transition: all ease-out 250ms;
+  cursor: pointer;
+  font-size: larger;
+  /* size: 2000px; */
+  /* height: 500px; */
+  /* width: 200px; */
+  border-radius: 10px;
+  position: absolute;
+  left: 870px;
+}
+.btn {
+    margin-right: 300px;
+    line-height: 50px;
+    height: 50px;
+    text-align: center;
+    width: 250px;
+    cursor: pointer;
+  }
+.button:hover{
+  background-color: #93734E;
+  transform: scale(1.15);
+}
+.button2:hover{
+  background-color: #93734E;
+  transform: scale(1.15);
+}
+
+/* .iconContainer{
+
+} */
+.icons{
+  position: absolute;
+  margin-top: 50px;
+  width: 80px;
+  margin-left: 320px ;
+  cursor: pointer;
+
+}
