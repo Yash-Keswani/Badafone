@@ -7,7 +7,7 @@ body{
     width: 100vw;
     height: 100vh;
   
-   background: url("./user_bg.jpg");
+   background: url("../images/user_bg.jpg");
    background-size: contain ;
    position: relative;
   
