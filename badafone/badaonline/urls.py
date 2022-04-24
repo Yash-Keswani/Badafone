@@ -17,7 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 
+"""
+path('display/<str:table_name>', views.display_table),
+path('all_plans', views.all_plans),
+path('edit_plan', views.edit_plan),
+path('login', views.login_page),
+path('user_statistics', views.user_stats),
+"""
 urlpatterns = [
-	path('display/<str:table_name>', views.display_table),
-	path('all_plans', views.all_plans)
+	path('<str:page>', views.wildcard),
 ]

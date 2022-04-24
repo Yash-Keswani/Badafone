@@ -21,6 +21,7 @@ def display_table(request, table_name: str):
 	tosend = {"data": pd.DataFrame(dump, columns=headers).to_string()}
 	return render(request, "badaonline/display_table.html", tosend)
 
+"""
 def all_plans(request):
 	with connection.cursor() as cursor:
 		cursor.execute("SELECT * FROM plan")
@@ -28,3 +29,11 @@ def all_plans(request):
 		headers = [i[0] for i in cursor.description]
 	tosend = {"data": pd.DataFrame(dump, columns=headers).to_html(classes='tbl', justify="center", index=False)}
 	return render(request, "badaonline/all_plans.html", tosend)
+"""
+
+def wildcard(request, page: str):
+	if page in ["admin", "edit_plan", "empployee", "main_page", "resolved", "sales", "submit_query", "user",
+	            "user_edit_plan", "user_stats"]:
+		return render(request, f"badaonline/{page}.html")
+	else:
+		return HttpResponseNotFound("Invalid Page Entered")

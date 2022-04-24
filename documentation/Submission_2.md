@@ -1,14 +1,14 @@
 ## Modifications
-* added SMS content to the SMS table
+* added SMS content to the SMS table - X
 * modified send time in SMS and calls to a datetime
-* answered support tickets also show a response
+* answered support tickets also show a response - X
 * purchase time also includes time of purchase now
 * fix email in employee table
 * added some check constraints:
 
 ## Check Constraints
 1) Support tickets cannot be closed without a response
-2) 
+2) When a user adds a new wallet, ensure that the user is above 18 years of age.
 
 ## Views and Grants
 Customer -
@@ -21,78 +21,14 @@ Sales -
   view with top 10 plans and their income
   ability to alter plan data
 
-Administrator
+Administrator - 
   access to defaulter view
   permission to activate or deactivate SIMs 
+  access to tower-wise statistics
 
-## Triggers
-1) Create a trigger that raises the number of calls by one for both caller and callee when a call is made
-
-```SQL
-CREATE TRIGGER called AFTER INSERT ON call_table  
-FOR EACH ROW  
-	BEGIN 
-		UPDATE usage_calling SET calls = CASE  
-		WHEN phone_number = caller THEN calls + 1  
-		WHEN phone_number = callee THEN calls + 1  
-		ELSE calls  
-	END;  
-END
-```
-
-2) Create a trigger that updates the value of `roaming` cell when the person enters or leaves their home tower.
-
-```SQL
-CREATE TRIGGER is_roaming BEFORE UPDATE ON sim_card
-FOR EACH ROW
-    BEGIN
-        SET NEW.roaming = 
-        IF(NEW.current_tower = NEW.home_tower, 0, 1);
-    END
-```
-
-3) Create a trigger that deducts money from a person's wallet balance when they purchase a plan.
-
-```SQL
-CREATE TRIGGER purchase BEFORE INSERT ON transaction
-FOR EACH ROW
-    BEGIN
-        UPDATE wallet
-        INNER JOIN transaction t 
-	        on wallet.phone_number = t.phone_number
-        INNER JOIN plan p 
-	        on t.plan_ID = p.plan_ID
-        SET balance = balance - p.price
-        WHERE wallet.phone_number = NEW.phone_number;
-    END
-
-```
-
-4) Create a trigger to assign a support ticket to an employee, provided they don't have any open support tickets assigned to them to begin with.
-
-```SQL
-CREATE TRIGGER assign_employee BEFORE INSERT ON support_ticket
-FOR EACH ROW
-    BEGIN
-        SET NEW.employee_ID = (
-            SELECT employee.employee_ID FROM employee
-                WHERE NOT employee_ID IN (
-                    SELECT employee_ID FROM support_ticket
-                    WHERE closed = 0
-                )
-                ORDER BY RAND()
-                LIMIT 1
-            );
-    END
-```
-
-## Indices
-* on aadhaar card in customer, in case someone wants to do lookup by aadhaar card
-* in phone number on customer to do lookup on (a single) customer by phone number
-* on tower by name to get tower ID from name (e.g. we want a query that finds all SIM cards in mumbai. for this, we would need the ID of mumbai, which is O(n) to seek for without an index. So we also store the reverse of ID->city name mapping)
-* on plan table by the name of the plan
-
-
+Employee - 
+  access to their own support tickets
+  
 ## Advanced Queries
 
 1) As a part of BadaFone's reference programme, rewards are given to anyone who refers someone to join BadaFone. To avail this offer, the referrer must be called by the referree. To prevent people from gaming the system, they also want to ensure that both people are in different cities. For the first phase, this programme is only available to Mumbai customers. Make a function to find the city that a phone is currently in, and use it to find customers who may have availed this offer.
@@ -182,3 +118,70 @@ UPDATE plan SET price =
 			1 * price
 	END
 ```
+
+## Triggers
+1) Create a trigger that raises the number of calls by one for both caller and callee when a call is made
+
+```SQL
+CREATE TRIGGER called AFTER INSERT ON call_table  
+FOR EACH ROW  
+	BEGIN 
+		UPDATE usage_calling SET calls = CASE  
+		WHEN phone_number = caller THEN calls + 1  
+		WHEN phone_number = callee THEN calls + 1  
+		ELSE calls  
+	END;  
+END
+```
+
+2) Create a trigger that updates the value of `roaming` cell when the person enters or leaves their home tower.
+
+```SQL
+CREATE TRIGGER is_roaming BEFORE UPDATE ON sim_card
+FOR EACH ROW
+    BEGIN
+        SET NEW.roaming = 
+        IF(NEW.current_tower = NEW.home_tower, 0, 1);
+    END
+```
+
+3) Create a trigger that deducts money from a person's wallet balance when they purchase a plan.
+
+```SQL
+CREATE TRIGGER purchase BEFORE INSERT ON transaction
+FOR EACH ROW
+    BEGIN
+        UPDATE wallet
+        INNER JOIN transaction t 
+	        on wallet.phone_number = t.phone_number
+        INNER JOIN plan p 
+	        on t.plan_ID = p.plan_ID
+        SET balance = balance - p.price
+        WHERE wallet.phone_number = NEW.phone_number;
+    END
+
+```
+
+4) Create a trigger to assign a support ticket to an employee, provided they don't have any open support tickets assigned to them to begin with.
+
+```SQL
+CREATE TRIGGER assign_employee BEFORE INSERT ON support_ticket
+FOR EACH ROW
+    BEGIN
+        SET NEW.employee_ID = (
+            SELECT employee.employee_ID FROM employee
+                WHERE NOT employee_ID IN (
+                    SELECT employee_ID FROM support_ticket
+                    WHERE closed = 0
+                )
+                ORDER BY RAND()
+                LIMIT 1
+            );
+    END
+```
+
+## Indices
+* on aadhaar card in customer, in case someone wants to do lookup by aadhaar card
+* in phone number on customer to do lookup on (a single) customer by phone number
+* on tower by name to get tower ID from name (e.g. we want a query that finds all SIM cards in mumbai. for this, we would need the ID of mumbai, which is O(n) to seek for without an index. So we also store the reverse of ID->city name mapping)
+* on plan table by the name of the plan

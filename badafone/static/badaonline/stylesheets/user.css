@@ -1,0 +1,72 @@
+body{
+    margin: 0;
+    font-family: Fugaz One;
+
+  }
+  .container{
+    width: 100vw;
+    height: 100vh;
+  
+   background: url("./user_bg.jpg");
+   background-size: contain ;
+   position: relative;
+  
+  }
+  .navbar{
+    display: flex;
+    align-items: center;
+  
+  }
+  
+  
+  .previous:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  .previous {
+    text-decoration: none;
+    display: inline-block;
+    padding: 4px 26px;
+    background-color: #f1f1f1;
+    color: black;
+    margin: 20px;
+    font-size: 40px;
+    border-radius: 50%;
+  
+  }
+  .heading{
+    padding-left: 400px;
+    margin: 0;
+    font-size: 70px;
+    color: white;
+  }
+  .verticalContainer{
+      display: flex;
+      
+      flex-direction: column;
+  }
+  .btn{
+    margin: 80px 100px;
+    width: 200px;
+    height: 100px;
+    background: none;
+    color: black;
+    font-size: 40px;
+    font-weight: 600;
+    font-family: Gabriel;
+    position: absolute;
+    left: 100px;
+  }
+  .btn2{
+    margin: 80px 100px;
+    width: 200px;
+    height: 100px;
+    background: none;
+    color: black;
+    font-size: 40px;
+    font-weight: 600;
+    font-family: Gabriel;
+    position: absolute;
+    right: 100px;
+  }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="html">
+    {% load static %}
+    <head>
+        <link href="{% static 'badaonline/stylesheets/main3.css' %}" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css?family=Fugaz+One&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Gabriela&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+        <title>Document</title>
+    </head>
+    <body>
+        <img src="{% static 'badaonline/images/image5.jpg' %}" alt="" />
+        <h2><i class="fa-solid fa-angle-left fa-2xl"></i></h2>
+        <div class="body">
+            <h1>EDIT PLAN</h1>
+            <p>PLEASE ENTER THE NEW PLAN YOU WISH FOR</p>
+            <form action="post">
+                <input type="text" placeholder=" USER ID " />
+                <button>SUBMIT</button>
+            </form>
+        </div>
+
+        <script
+            src="https://kit.fontawesome.com/4f701f9ce0.js"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

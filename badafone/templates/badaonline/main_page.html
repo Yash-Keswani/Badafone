@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link
+            href="https://fonts.googleapis.com/css?family=Fugaz+One&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Gabriela&display=swap"
+            rel="stylesheet"
+        />
+        <link href="{% static 'badaonline/stylesheets/main1.css' %}" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+        <script
+            src="https://kit.fontawesome.com/4f701f9ce0.js"
+            crossorigin="anonymous"
+        ></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <h1 class="header">BADAFONE</h1>
+        <div class="icons">
+            <i class="fa-solid fa-message fa-2xl"></i>
+            <i class="fa-solid fa-wifi fa-2xl"></i>
+            <i class="fa-solid fa-phone fa-2xl"></i>
+        </div>
+
+        <h2 class="names">Neelabh | Sahil | Yash | Niranjan</h2>
+
+        <div class="buttons">
+            <h1 class="button">ALL PLANS</h1>
+            <h1 class="button">LOGIN</h1>
+            <!-- <h1 class="button">MY STATS</h1> -->
+        </div>
+
+        <div class="imgs">
+            <img src="{% static 'badaonline/images/image1.png' %}" alt="" />
+            <img src="{% static 'badaonline/images/image2.png' %}" alt="" />
+        </div>
+    </body>
+</html>
