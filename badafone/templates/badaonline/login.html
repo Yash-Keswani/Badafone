@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static 'badaonline/stylesheets/login.css' %}" rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/css?family=Fugaz+One&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Gabriela&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="wrapper">
+            <img src="{% static 'badaonline/images/login_bg.jpg' %}" alt="" />
+            <h2><i class="fa-solid fa-angle-left fa-2xl"></i></h2>
+            <div class="header">
+                <h1>ENTER YOUR ID</h1>
+    
+            </div>
+     
+            <div class="container">
+                <select name="employee" id="employee" class="te">
+                    <option value="Employee">Employee</option>
+                    <option value="Sales">Sales</option>
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+     
+            <div class="body">
+              
+                <p>PLEASE ENTER YOUR ID AND PRESS ENTER</p>
+                <!-- <select name="employee" id="employee" class="te">
+                    <option value="Employee">Employee</option>
+                    <option value="Sales">Sales</option>
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                </select> -->
+                <form action="">
+                    <div>
+                        <input type="text" placeholder=" ID" />
+                        <input type="password" value="password"/>
+                        <br><br>
+                        <button>SUBMIT</button>
+                    </div>
+                    <!-- <input type="text" placeholder=" USER ID " /> -->
+                    <!-- <br/> -->
+                    <!-- <input type="password" value="password"/> -->
+                    <!-- <button class="te">SUBMIT</button> -->
+                </form>
+                <!-- <button class="te">SUBMIT</button> -->
+            </div>
+
+        </div>
+
+       
+
+        <script
+            src="https://kit.fontawesome.com/4f701f9ce0.js"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

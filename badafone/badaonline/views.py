@@ -33,7 +33,7 @@ def all_plans(request):
 
 def wildcard(request, page: str):
 	if page in ["admin", "edit_plan", "empployee", "main_page", "resolved", "sales", "submit_query", "user",
-	            "user_edit_plan", "user_stats"]:
+	            "user_edit_plan", "user_stats", "unresolved", "login"]:
 		return render(request, f"badaonline/{page}.html")
 	else:
 		return HttpResponseNotFound("Invalid Page Entered")
