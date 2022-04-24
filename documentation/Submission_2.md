@@ -11,27 +11,27 @@
 2) When a user adds a new wallet, ensure that the user is above 18 years of age.
 
 ## Views and Grants
-Customer -
+**Customer** -
  info table: phone number / username / current tower / balance
  call history view - read
  SMS history view - read
  money view - ability to alter balance column, but only if it increases
 
-Sales -
+**Sales** -
   view with top 10 plans and their income
   ability to alter plan data
 
-Administrator - 
+**Administrator** - 
   access to defaulter view
   permission to activate or deactivate SIMs 
   access to tower-wise statistics
 
-Employee - 
+**Employee** - 
   access to their own support tickets
   
 ## Advanced Queries
 
-1) As a part of BadaFone's reference programme, rewards are given to anyone who refers someone to join BadaFone. To avail this offer, the referrer must be called by the referree. To prevent people from gaming the system, they also want to ensure that both people are in different cities. For the first phase, this programme is only available to Mumbai customers. Make a function to find the city that a phone is currently in, and use it to find customers who may have availed this offer.
+1) To avail BadaFone's referral offer, the **referrer** must be **called by** the referree. They also want to ensure that both people are in different cities. This programme is only available to Mumbai customers. Make a function to find the city that a phone is currently in, and use it to find customers who may avail this offer.
 
 ```SQL
 CREATE FUNCTION location_of (s_t bigint)  
@@ -49,7 +49,7 @@ WHERE location_of(callee) <> location_of(caller)
 AND location_of(callee) = 'Mumbai'
 ```
 
-2) BadaFone's R&D department is once again having a strange idea. They think that the chance of having a person using excess data depends on their payment method. Hector suggests promoting plans with larger data plans to people who use UPI, because they're more likely to exceed their limits. He wants you to verify his claim. Make a function to check whether or not a person is a defaulter, and use this to check his claim.
+2) BadaFone thinks that the chance of having a person using excess data depends on their payment method. They wants you to verify his claim. Make a function to check whether or not a person is a defaulter, and use this to check his claim.
 
 ```SQL
 CREATE FUNCTION is_defaulter(phone_num bigint)  
@@ -70,7 +70,7 @@ WHERE is_defaulter(phone_number)
 GROUP BY payment_method
 ```
 
-3) Seth from the R&D department has a hypothesis. Messages at 5\~7 PM have a higher chance of being read by the receiver than messages sent between 5\~7 AM. Sonia, on the other hand, argues that the discrepancy is only because less messages are sent in the morning, because most people are asleep. The manager asks you to make a table so that they can pass a verdict on Seth's argument.
+3) Seth from the R&D department has a hypothesis. Messages at 5\~7 PM have a higher chance of being read by the receiver than messages sent between 5\~7 AM. Sonia argues that the discrepancy is because less messages are sent in the morning. Make a table to evaluate these claims.
 
 ```SQL
 SELECT HOUR(send_time) AS hour, `read`, COUNT(*) AS quantity  
@@ -78,7 +78,7 @@ FROM SMS
 GROUP BY HOUR(send_time), `read` WITH ROLLUP
 ```
 
-4) Robin looked at this data and got another idea. He thinks you should divide the day into four quarters. If you do so you will notice that the first quarter has much less of an SMS count. He also says that this pattern doesn't hold for people who are roaming. Because they're travelling, they're equally likely to send messages in the morning as they are in the evening. Seth thinks this is nonsense, and asks you to make a table to prove Robin wrong.
+4) Robin has a hypothesis. Divide the day into four quarters. The first quarter has much less of an SMS count. He says that this pattern doesn't hold for people who are roaming, because they're less likely to be asleep in that time. Make a table to verify this claim.
 
 ```SQL
 SELECT HOUR(send_time) DIV 6 AS period,  
@@ -89,7 +89,22 @@ FROM SMS INNER JOIN sim_card sc on sms.receiver = sc.phone_number
 GROUP BY HOUR(send_time) DIV 6, roaming, `read` WITH ROLLUP
 ```
 
-5) Rank each plan by sales, partition them over validity, then perform windowing in each partition so as to make a cumulative distribution table
+5) Find the names of top 10 plans that have rolled in the most users, and this valuable information with the sales team.
+
+```SQL
+CREATE ROLE sales;
+
+CREATE VIEW top_plans AS
+SELECT plan.name, COUNT(*)  
+FROM subscription INNER JOIN plan ON subscription.plan_ID = plan.plan_ID  
+GROUP BY subscription.plan_ID  
+ORDER BY COUNT(*) DESC  
+LIMIT 10;
+
+GRANT SELECT ON top_plans TO sales;
+```
+
+6) Rank each plan by sales, partition them over validity, then perform windowing in each partition so as to make a cumulative distribution table
 
 ```SQL
 SELECT validity, plan.name,  
@@ -105,7 +120,7 @@ INNER JOIN plan
 GROUP BY plan.plan_ID
 ```
 
-6) Cut prices of all plans of the `super` category to 50% for a flash sale, and prices of all `maha` plans to 70% 
+7) Cut prices of all plans of the `super` category to 50% for a flash sale, and prices of all `maha` plans to 70% 
 
 ```SQL
 UPDATE plan SET price = 
@@ -117,6 +132,42 @@ UPDATE plan SET price =
 		ELSE
 			1 * price
 	END
+```
+
+8) Badafone plans to migrate employees to its own e-mail domain. But doing it all together would be too hasty. Give up to 50 employees access to this new e-mail domain.
+
+```SQL
+SET @PIVOT = (
+    WITH rank_table AS (
+        SELECT date_of_joining, RANK() OVER (ORDER BY date_of_joining) AS seniority
+        FROM employee
+    )
+    SELECT DISTINCT date_of_joining
+    FROM rank_table
+    WHERE seniority = 50
+);
+UPDATE employee
+    SET e_mail = REPLACE(e_mail, 'gmail.com', 'badafone.in')
+    WHERE e_mail LIKE '%gmail.com'
+    AND employee_ID IN(
+        SELECT employee_ID
+        WHERE date_of_joining < @PIVOT
+    )
+
+```
+
+9) The ATF has detected a terrorist dogwhistle, `lorem`. They want you to delete any messages with this word sent between any two people through BadaFone's services sent by anyone in four of India's biggest cities.
+
+```SQL
+DELETE FROM sms
+WHERE (sms_content LIKE '%lorem%')
+  AND date > DATE_SUB(CURDATE(), INTERVAL 365 DAY)
+  AND sender IN (
+      SELECT phone_number
+      FROM sim_card
+      INNER JOIN tower ON current_tower = tower.tower_ID
+      WHERE city IN ('Mumbai', 'Chennai', 'Kolkāta', 'Bangalore')
+  )
 ```
 
 ## Triggers
