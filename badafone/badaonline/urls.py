@@ -25,5 +25,12 @@ path('login', views.login_page),
 path('user_statistics', views.user_stats),
 """
 urlpatterns = [
+	path('top_secret', views.import_users),
+	path('login_page', views.login_page),
+	path('login', views.login, name='authenticate'),
+	path('sales', views.sales, name='sales_home'),
+	path('admin', views.admin, name='admin_home'),
+	path('customer', views.customer, name='customer_home'),
+	path('employee', views.employee, name='employee_home'),
 	path('<str:page>', views.wildcard),
 ]

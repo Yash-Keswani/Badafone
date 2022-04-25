@@ -44,18 +44,16 @@
                     <option value="User">User</option>
                     <option value="Admin">Admin</option>
                 </select> -->
-                <form action="">
                     <div>
-                        <input type="text" placeholder=" ID" />
-                        <input type="password" value="password"/>
+                        <input type="text" id="username" placeholder=" ID" />
+                        <input type="password" id="password" value="password"/>
                         <br><br>
-                        <button>SUBMIT</button>
+                        <button onclick="sumbit()">SUBMIT</button>
                     </div>
                     <!-- <input type="text" placeholder=" USER ID " /> -->
                     <!-- <br/> -->
                     <!-- <input type="password" value="password"/> -->
                     <!-- <button class="te">SUBMIT</button> -->
-                </form>
                 <!-- <button class="te">SUBMIT</button> -->
             </div>
 
@@ -67,5 +65,28 @@
             src="https://kit.fontawesome.com/4f701f9ce0.js"
             crossorigin="anonymous"
         ></script>
+        <script type="text/javascript">
+            function sumbit(){
+                let username = document.getElementById('username').value;
+                let password = document.getElementById('password').value;
+
+                fetch('{{ submit_url }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({'username':username,'password':password})
+                })
+                    .then((response) => {
+                        if(response.status === 401) {
+                            alert("Invalid Username / Password")
+                        } else if (!response.ok){
+                            alert("Something really weird happened.")
+                        } else if (response.redirected){
+                            window.location.href=response.url;
+                        }
+                    })
+            }
+        </script>
     </body>
 </html>

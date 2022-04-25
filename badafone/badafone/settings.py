@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 key = os.environ.get("SECRET_KEY")
 if key is None:
-	raise KeyError("secret key not added as an environment variable")
+	# raise KeyError("secret key not added as an environment variable")
+	pass
 SECRET_KEY = key
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -86,12 +87,22 @@ else:
 	assert os.getenv("CONNECTING") is not None
 	credentials = json.loads(os.getenv("CONNECTING"))
 
-DATABASES = {
-	'default': {
+USELOCAL = True
+if not USELOCAL:
+	defaultdb = {
+		           'ENGINE': 'django.db.backends.mysql',
+		           'HOST': 'containers-us-west-38.railway.app',
+		           'PORT': '6030',
+	           } | credentials
+else:
+	defaultdb = {
 		'ENGINE': 'django.db.backends.mysql',
-		'HOST': 'containers-us-west-38.railway.app',
-		'PORT': '6030',
-	} | credentials
+		'OPTIONS': {
+			'read_default_file': 'connecting.cnf',
+		}
+	}
+DATABASES = {
+	'default': defaultdb
 }
 
 # Password validation
@@ -131,7 +142,7 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
 	BASE_DIR / "static",
-	]
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
