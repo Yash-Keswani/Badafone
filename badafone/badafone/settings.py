@@ -87,7 +87,7 @@ else:
 	assert os.getenv("CONNECTING") is not None
 	credentials = json.loads(os.getenv("CONNECTING"))
 
-USELOCAL = True
+USELOCAL = False
 if not USELOCAL:
 	defaultdb = {
 		           'ENGINE': 'django.db.backends.mysql',
