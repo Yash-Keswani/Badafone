@@ -1,14 +1,12 @@
 body{
   margin: 0;
   font-family: Fugaz One;
-
-
 }
 .container{
   width: 100vw;
   height: 100vh;
 
- background: url("./unresolved_bg.png");
+ background: url('../images/unresolved_bg.png');
  background-size: cover ;
  position: relative;
 
