@@ -23,15 +23,32 @@
         <div class="body">
             <h1>EDIT PLAN</h1>
             <p>PLEASE ENTER THE NEW PLAN YOU WISH FOR</p>
-            <form action="post">
-                <input type="text" placeholder=" USER ID " />
-                <button style="font-size: 15px;">SUBMIT</button>
-            </form>
+            <input type="text" id="plan_ID" placeholder=" Enter Plan ID " />
+            <button style="font-size: 15px;" onclick="submit_to_server()">SUBMIT</button>
         </div>
 
         <script
             src="https://kit.fontawesome.com/4f701f9ce0.js"
             crossorigin="anonymous"
         ></script>
+
+        <script type="javascript">
+            function submit_to_server(){
+                fetch('{{ submit_url }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({'plan_ID':document.getElementById('plan_ID')})
+                })
+                .then((response) => {
+                    if (response.ok){
+                        alert("Plan Updated Successfully")
+                    } else{
+                        alert("Invalid Plan ID")
+                    }
+                })
+            }
+        </script>
     </body>
 </html>

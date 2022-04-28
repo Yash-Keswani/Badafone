@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'badaonline/stylesheets/common.css ' %}">
     <link rel="stylesheet" href="{% static 'badaonline/stylesheets/unresolved.css ' %}">
     <link href="https://fonts.googleapis.com/css?family=Fugaz+One&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Gabriela&display=swap" rel="stylesheet"/>
@@ -11,32 +12,44 @@
 </head>
 
 <body style="background-image: url('{% static 'badaonline/images/admin_bg.jpg' %}')">
-<div class="container">
+<div class="container" align="center">
     <div class="navbar">
         <a href="#" class="previous ">&#8249;</a>
-        <div class="headContainer">
-            <h1 class="heading">UNRESOLVED TICKETS</h1>
-        </div>
-
     </div>
-    <div class="midContainer ">
-        <h2 class="bund">
-            Display Table for Ticket Id / Content Here
-        </h2>
+    <h1 class="heading" style="margin-top: 0;">SUPPORT TICKET/S</h1>
+    <div style="width: 80%; margin-left: auto; margin-right: auto;">
+        {{ data|safe }}
     </div>
-    <div class="centerContainer">
-
-        <div class="midHeader">
+    <div>
+        <div class="midHeader" style="width:fit-content">
             <h2 class="ticketResolve">
-                RESOLVE A TICKET
+                SET TICKET RESPONSE
             </h2>
         </div>
-        <input type="text" class="query" placeholder="TICKET ID">
-        <div class="btn btn-one">
-            <span>SUBMIT</span>
-        </div>
+        <input type="text" class="query" id="response" placeholder="lorem ipsum dolor est">
+        <button onclick="submit_form()">SUBMIT</button>
     </div>
 
 </div>
+<script type="text/javascript">
+    function submit_form() {
+        const response = document.getElementById("response").value;
+        const ID = {{ ID|safe }}
+        fetch('submit_query', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({'response':response,'ID':ID})
+        })
+            .then((response) => {
+                if (response.ok){
+                    alert("altered successfully. refresh to see change.")
+                } else{
+                    alert("error in altering")
+                }
+            })
+    }
+</script>
 </body>
 </html>

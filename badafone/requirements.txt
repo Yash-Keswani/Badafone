@@ -2,6 +2,7 @@ pip==22.0.4
 setuptools==62.1.0
 wheel==0.37.1
 mysqlclient==2.1.0
+sqlalchemy==1.4.35
 
 Django~=4.0.4
 pandas~=1.4.2

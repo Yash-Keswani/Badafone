@@ -3,6 +3,7 @@
 <html>
 <head>
     <link href="{% static 'badaonline/stylesheets/user_stats.css' %}" rel="stylesheet"/>
+    <link href="{% static 'badaonline/stylesheets/common.css' %}" rel="stylesheet"/>
     <link
             href="https://fonts.googleapis.com/css?family=Fugaz+One&display=swap"
             rel="stylesheet"
@@ -23,7 +24,9 @@
 <div class="body">
     <h1>USER STATISTICS</h1>
     <div class="info">
+        {{ data | safe }}
         <!-- <p>ENTER NEW<br />USER.ID</p> -->
+        <!--
         <table cellspacing="0">
             <thead>
             <th>Items</th>
@@ -58,6 +61,7 @@
                 <td></td>
             </tr>
         </table>
+        -->
     </div>
 </div>
 

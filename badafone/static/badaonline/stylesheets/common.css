@@ -1,0 +1,21 @@
+.tbl {
+    font-size: 1.5vw;
+    border-collapse: collapse;
+    border: 1px solid gray;
+}
+
+.tbl td, th {
+    padding: 5px;
+}
+
+.tbl tr:nth-child(even) {
+    background: #D0D0D0;
+}
+.tbl tr:nth-child(odd) {
+    background: #EEEEEE;
+}
+
+.tbl tr:hover {
+    background: silver;
+    cursor: pointer;
+}
