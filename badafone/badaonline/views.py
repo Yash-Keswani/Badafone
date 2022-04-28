@@ -1,5 +1,6 @@
 import json
 from _csv import reader
+from datetime import datetime
 
 import MySQLdb
 import pandas
@@ -40,9 +41,10 @@ def all_plans(request):
 	return render(request, "badaonline/all_plans.html", tosend)
 """
 
+@require_GET
 def wildcard(request, page: str):
 	if page in ["admin", "edit_plan", "empployee", "main_page", "resolved", "sales", "submit_query", "user",
-	            "user_edit_plan", "user_stats", "unresolved", "login"]:
+	            "user_buy_plan", "user_stats", "unresolved", "login"]:
 		return render(request, f"badaonline/{page}.html")
 	else:
 		return HttpResponseNotFound("Invalid Page Entered")
@@ -67,11 +69,6 @@ def customer(request):
 @require_GET
 def employee(request):
 	return render(request, "badaonline/employee.html")
-
-@require_POST
-def update_plan(request):
-	with connection.cursor() as cursor:
-		cursor.execute("")
 
 @require_GET
 def user_stats(request):
@@ -122,6 +119,7 @@ def import_users(request: HttpRequest):
 			data.append(user)
 		User.objects.bulk_create(data)
 
+@require_POST
 def submit_query(request: HttpRequest):
 	data_in = json.loads(request.body)
 	try:
@@ -129,4 +127,16 @@ def submit_query(request: HttpRequest):
 			cursor.execute(f"UPDATE support_ticket SET ticket_response = '{data_in['response']:s}', closed=1 WHERE ticket_ID = {data_in['ID']:d};")
 	except MySQLdb.Error | MySQLdb.Warning:
 		return HttpResponse(content="Query Error", status=500)
-	return HttpResponse(content=json.dumps({'response': data_in}))
+	return HttpResponse(content="successful")
+
+@require_POST
+def update_plan(request: HttpRequest):
+	data_in = json.loads(request.body)
+	# TODO: STUB
+	phone_number=70181784748
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute(f"""INSERT INTO transaction VALUES ({phone_number},{data_in['plan_ID']}, '{datetime.strftime(datetime.today(),"%Y-%m-%d")}','{datetime.strftime(datetime.now(), "%H:%M:%S")}')""")
+	except MySQLdb.Error:
+		return HttpResponse(content="Query Error", status=500)
+	return HttpResponse(content="success", status=200)

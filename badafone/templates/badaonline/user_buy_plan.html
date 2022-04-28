@@ -20,11 +20,11 @@
     <body>
         <img src="{% static 'badaonline/images/user_edit_plan_bg.jpg' %}" alt="" />
         <h2><i class="fa-solid fa-angle-left fa-2xl"></i></h2>
-        <div class="body">
-            <h1>EDIT PLAN</h1>
+        <div class="body" style="display: flex; align-items: center">
+            <h1>BUY A NEW PLAN</h1>
             <p>PLEASE ENTER THE NEW PLAN YOU WISH FOR</p>
             <input type="text" id="plan_ID" placeholder=" Enter Plan ID " />
-            <button style="font-size: 15px;" onclick="submit_to_server()">SUBMIT</button>
+            <button style="font-size:2vw; padding: 1vw;" onclick="submit_to_server()">SUBMIT</button>
         </div>
 
         <script
@@ -32,18 +32,18 @@
             crossorigin="anonymous"
         ></script>
 
-        <script type="javascript">
+        <script type="text/javascript">
             function submit_to_server(){
-                fetch('{{ submit_url }}', {
+                fetch('update_plan', {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': '{{ csrf_token }}',
                     },
-                    body: JSON.stringify({'plan_ID':document.getElementById('plan_ID')})
+                    body: JSON.stringify({'plan_ID':document.getElementById('plan_ID').value})
                 })
                 .then((response) => {
                     if (response.ok){
-                        alert("Plan Updated Successfully")
+                        alert("Plan Purchased Successfully")
                     } else{
                         alert("Invalid Plan ID")
                     }
