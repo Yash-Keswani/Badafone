@@ -46,21 +46,11 @@ body{
   .centerContainer{
     display: flex;
     align-items: center;
-    position: absolute;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-    justify-content: space-between;
-  
   }
   .subheader{
-    flex-wrap: wrap;
-    margin: 0 280px;
-    padding: 30px;
   }
   .subheader2{
     flex-wrap: wrap;
-    margin: 0 280px 0 0;
     /* padding: 30px; */
   }
   .tickets{
@@ -71,13 +61,6 @@ body{
 
 
   .btn {
-    margin-left: 400px;
-    position: absolute;
-    left: 200px;
-    bottom: -400px;
-    line-height: 50px;
-    height: 50px;
-    text-align: center;
     width: 250px;
     cursor: pointer;
   }

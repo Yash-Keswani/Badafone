@@ -55,10 +55,6 @@ def login_page(request):
 	              {"submit_url": reverse('authenticate')})
 
 @require_GET
-def admin(request):
-	return render(request, "badaonline/admin.html")
-
-@require_GET
 def customer(request):
 	return render(request, "badaonline/user.html")
 
@@ -103,6 +99,25 @@ def sales(request):
 	data = pandas.read_sql_query("SELECT * FROM top_plans", connection)
 	return render(request, "badaonline/sales.html", {
 		'data': data.to_html(classes='tbl')
+	})
+
+@require_GET
+def admin(request):
+	data = pandas.read_sql_query("SELECT * FROM defaulters", connection)
+	query = """
+SELECT city, received, sent FROM
+(SELECT callee_tower as tower, COUNT(*) AS received FROM call_table
+GROUP BY callee_tower) as tr
+JOIN
+(SELECT caller_tower as tower, COUNT(*) AS sent FROM call_table
+GROUP BY caller_tower) as ts on tr.tower = ts.tower
+JOIN tower ON tower_ID = tr.tower
+"""
+ 
+	data2 = pandas.read_sql_query(query, connection)
+	return render(request, "badaonline/admin.html", {
+		'defaulters': data.to_html(classes='tbl'),
+		'call_stats': data2.to_html(classes='tbl')
 	})
 
 @require_POST
