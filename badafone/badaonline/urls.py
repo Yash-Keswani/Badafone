@@ -31,6 +31,7 @@ urlpatterns = [
 	path('sales', views.sales, name='sales_home'),
 	path('admin', views.admin, name='admin_home'),
 	path('update_plan', views.update_plan, name='update_plan'),
+	path('update_plan_info', views.update_plan_info, name='update_plan_info'),
 	path('user_stats', views.user_stats, name='user_stats'),
 	path('unresolved', views.unresolved, name='unresolved'),
 	path('customer', views.customer, name='customer_home'),

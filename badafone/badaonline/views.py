@@ -55,10 +55,6 @@ def login_page(request):
 	              {"submit_url": reverse('authenticate')})
 
 @require_GET
-def sales(request):
-	return render(request, "badaonline/sales.html")
-
-@require_GET
 def admin(request):
 	return render(request, "badaonline/admin.html")
 
@@ -97,6 +93,18 @@ def unresolved(request):
 		'ID': data["ticket_ID"][0]
 	})
 
+@require_GET
+def sales(request):
+	"""
+	if request.user.is_authenticated:
+         user = request.user.id
+	"""
+	user_id = 589090
+	data = pandas.read_sql_query("SELECT * FROM top_plans", connection)
+	return render(request, "badaonline/sales.html", {
+		'data': data.to_html(classes='tbl')
+	})
+
 @require_POST
 def login(request: HttpRequest):
 	redirect_pages = {"customer": reverse('customer_home'), "employee": reverse('employee_home'),
@@ -126,6 +134,19 @@ def submit_query(request: HttpRequest):
 		with connection.cursor() as cursor:
 			cursor.execute(f"UPDATE support_ticket SET ticket_response = '{data_in['response']:s}', closed=1 WHERE ticket_ID = {data_in['ID']:d};")
 	except MySQLdb.Error | MySQLdb.Warning:
+		return HttpResponse(content="Query Error", status=500)
+	return HttpResponse(content="successful")
+
+@require_POST
+def update_plan_info(request: HttpRequest):
+	data_in = json.loads(request.body)
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute(f"UPDATE plan "
+			               f"SET validity = {int(data_in['validity']):d}, "
+			               f"price = {int(data_in['price']):d} "
+			               f"WHERE `name` = '{data_in['name']:s}';")
+	except MySQLdb.Error:
 		return HttpResponse(content="Query Error", status=500)
 	return HttpResponse(content="successful")
 

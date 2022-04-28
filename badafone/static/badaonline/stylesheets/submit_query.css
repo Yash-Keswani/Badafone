@@ -36,8 +36,8 @@ body{
   
   }
   .heading{
-    padding-left: 450px;
-    margin: 0;
+    margin-left: auto;
+      margin-right: auto;
     font-size: 70px;
     color: white;
   }

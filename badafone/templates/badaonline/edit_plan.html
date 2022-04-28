@@ -20,23 +20,49 @@
     <div class="verticalContainer">
         <div class="data">
             <h2 class="subheader">ENTER PLAN NAME</h2>
-            <input type="text" class="planDetail" placeholder="Plan Name">
+            <input type="text" class="planDetail" placeholder="Plan Name" id="plan_name">
         </div>
         <div class="data">
             <h2 class="subheader">ENTER PLAN VALIDITY</h2>
-            <input type="text" class="planDetail" placeholder="Plan Validity">
+            <input type="text" class="planDetail" placeholder="Plan Validity" id="plan_validity">
         </div>
         <div class="data">
             <h2 class="subheader">ENTER PLAN PRICE</h2>
-            <input type="text" class="planDetail" placeholder="Plan Price">
+            <input type="text" class="planDetail" placeholder="Plan Price" id="plan_price">
 
         </div>
-        <div class="btn btn-one">
+        <div class="btn btn-one" onclick="submit_new_plan()">
             <span>SUBMIT</span>
         </div>
 
     </div>
 
 </div>
+<script type="text/javascript">
+   function submit_new_plan(){
+       const pname = document.getElementById("plan_name").value;
+       const pvalidity = document.getElementById("plan_validity").value;
+       const pprice = document.getElementById("plan_price").value;
+
+       fetch('update_plan_info', {
+           method: 'POST',
+           headers: {
+               'X-CSRFToken': '{{ csrf_token }}',
+           },
+           body: JSON.stringify({
+               "name": pname,
+               "validity": pvalidity,
+               "price": pprice
+           })
+       })
+           .then((response) => {
+               if (response.ok){
+                   alert("Plan Updated")
+               } else{
+                   alert("Invalid Plan ID")
+               }
+           })
+   }
+</script>
 </body>
 </html>

@@ -4,13 +4,8 @@ body{
     font-weight: lighter;
   }
   .container{
-    width: 100vw;
-    height: 100vh;
-  
    background: url("../images/sales_bg.jpg");
    background-size: cover ;
-   position: relative;
-  
   }
   .navbar{
     display: flex;
@@ -36,29 +31,21 @@ body{
   
   }
   .heading{
-    padding-left: 560px;
-    margin: 0;
+    margin-left: auto;
+      margin-right: auto;
     font-size: 70px;
     color: white;
   }
   .centerContainer{
     display: flex;
     align-items: center;
-    position: absolute;
     top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
     justify-content: space-between;
   
   }
   .subheader{
-    width: 300px;
-   margin-left: 280px;
-    padding: 30px;
-    
-    
-
-    
+   margin-left: auto;
+      margin-right: auto;
   }
   .tickets{
     color: white;
@@ -68,7 +55,6 @@ body{
 
  
   .planid{
-        margin-left: 310px;
   }
   .btn {
     line-height: 50px;
@@ -79,7 +65,6 @@ body{
   }
   .btn-one {
     margin-top: 20px;
-    margin-left: 310px;
     color: #FFF;
     transition: all 0.3s;
     position: relative;
