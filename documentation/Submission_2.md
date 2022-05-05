@@ -1,21 +1,17 @@
-## Modifications
-* added SMS content to the SMS table - X
+## Update of Scope
+* added SMS content to the SMS table 
 * modified send time in SMS and calls to a datetime
-* answered support tickets also show a response - X
+* answered support tickets also show a response 
 * purchase time also includes time of purchase now
 * fix email in employee table
-* added some check constraints:
-
-## Check Constraints
-1) Support tickets cannot be closed without a response
-2) When a user adds a new wallet, ensure that the user is above 18 years of age.
+* added a check constraint, support tickets cannot be closed without a response
 
 ## Views and Grants
 **Customer** -
- info table: phone number / username / current tower / balance
- call history view - read
- SMS history view - read
- money view - ability to alter balance column, but only if it increases
+ call history - read
+ SMS history - read
+ phone plan, data - read
+ transaction - write, to purchase a new plan.
 
 **Sales** -
   view with top 10 plans and their income
@@ -27,7 +23,8 @@
   access to tower-wise statistics
 
 **Employee** - 
-  access to their own support tickets
+  access to their own support tickets - read
+  ability to answer them - write 
   
 ## Advanced Queries
 
@@ -49,7 +46,7 @@ WHERE location_of(callee) <> location_of(caller)
 AND location_of(callee) = 'Mumbai'
 ```
 
-2) BadaFone thinks that the chance of having a person using excess data depends on their payment method. They wants you to verify his claim. Make a function to check whether or not a person is a defaulter, and use this to check his claim.
+2) BadaFone thinks that the chance of having a person using excess data depends on their payment method. They want you to verify this claim. Make a function to check whether or not a person is a defaulter, and use this to check the claim.
 
 ```SQL
 CREATE FUNCTION is_defaulter(phone_num bigint)  
@@ -139,7 +136,8 @@ UPDATE plan SET price =
 ```SQL
 SET @PIVOT = (
     WITH rank_table AS (
-        SELECT date_of_joining, RANK() OVER (ORDER BY date_of_joining) AS seniority
+        SELECT date_of_joining, RANK() 
+			OVER (ORDER BY date_of_joining) AS seniority
         FROM employee
     )
     SELECT DISTINCT date_of_joining
@@ -169,6 +167,71 @@ WHERE (sms_content LIKE '%lorem%')
       WHERE city IN ('Mumbai', 'Chennai', 'Kolkāta', 'Bangalore')
   )
 ```
+
+10) Give 100 Rs. cashback to all the users who have used above 24 hours of talk time, total, either as a caller or as a callee.
+
+```SQL
+CREATE FUNCTION hourdiff (start_time TIME, end_time TIME) RETURNS int
+    RETURN HOUR(ADDTIME(TIMEDIFF(end_time, start_time), '24:00:00')) % 24;
+
+UPDATE wallet
+    SET balance = balance + 100
+    WHERE phone_number IN
+        (SELECT customer FROM
+        (SELECT dtt.callee AS customer, time_as_caller + time_as_callee as total_calling
+         FROM
+             (SELECT caller,
+             hourdiff(start_time, end_time) as time_as_caller
+             FROM call_table
+             GROUP BY caller) AS ctt
+                 INNER JOIN
+             (SELECT callee,
+             hourdiff(start_time, end_time) as time_as_callee
+             FROM call_table
+             GROUP BY callee) as dtt
+                 ON dtt.callee = ctt.caller) as ctc
+        WHERE total_calling > 24)
+```
+
+## Embedded SQL Queries
+1) Fetch a user's data (Python, Pandas)
+
+```python
+pandas.read_sql_query(
+			"SELECT * FROM customer NATURAL JOIN usage_calling "
+			"WHERE customer_ID = " + str(user_id), connection)
+```
+
+2) Fetch number of calls sent and received by each tower (Python, Pandas)
+
+```python
+pandas.read_sql_query("""SELECT city, received, sent FROM
+(SELECT callee_tower as tower, COUNT(*) AS received FROM call_table
+GROUP BY callee_tower) as tr
+JOIN
+(SELECT caller_tower as tower, COUNT(*) AS sent FROM call_table
+GROUP BY caller_tower) as ts on tr.tower = ts.tower
+JOIN tower ON tower_ID = tr.tower""", connection)
+```
+
+3) Set new data for a calling plan (Python, MySQL connector, django)
+
+```python
+cursor.execute(f"UPDATE plan "
+			   f"SET validity = {int(data_in['validity']):d}, "
+			   f"price = {int(data_in['price']):d} "
+			   f"WHERE `name` = '{data_in['name']:s}';")
+
+```
+
+4) Update the response to a support ticket, and close it if open 
+
+```python
+cursor.execute(f"UPDATE support_ticket SET ticket_response = '{data_in['response']:s}', closed=1 
+WHERE ticket_ID = {data_in['ID']:d};")
+```
+
+There are of course, many more.
 
 ## Triggers
 1) Create a trigger that raises the number of calls by one for both caller and callee when a call is made
